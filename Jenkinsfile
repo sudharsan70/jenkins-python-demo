@@ -2,12 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/sudharsan70/jenkins-python-demo.git'
-            }
-        }
-
         stage('Run Tests') {
             steps {
                 sh '''
