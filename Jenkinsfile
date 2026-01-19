@@ -1,24 +1,16 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.11-slim'
-            args '-u root'
-        }
-    }
+    agent any
 
     stages {
-        stage('Install Dependencies') {
+        stage('Run Tests in Docker') {
             steps {
                 sh '''
-                pip install --upgrade pip
-                pip install -r requirements.txt
+                docker run --rm \
+                  -v "$PWD":/app \
+                  -w /app \
+                  python:3.11-slim \
+                  sh -c "pip install -r requirements.txt && pytest -v"
                 '''
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh 'pytest -v'
             }
         }
     }
